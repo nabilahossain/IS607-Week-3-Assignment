@@ -1,0 +1,95 @@
+---
+title: "IS 607 Week 3 Assignment: Hungarian Heart Disease Data Set"
+author: "Nabila Hossain"
+date: "September 12, 2015"
+output: html_document
+---
+
+####Your task is to choose one dataset, then study the data and its associated description of the data (i.e. "data dictionary"). You should take the data, and create an R data frame with a subset of the columns (and if you like rows) in the dataset. Your deliverable is the R code to perform these transformation tasks.
+  
+    
+I use the "UC Irvine Machine Learning Repository," which is an online repository with many databases. One such dataset is Heart Disease dataset <http://archive.ics.uci.edu/ml/datasets/Heart+Disease> which has four data sets from four different places. 
+
+__I choose the reprocesses Hungarian Heart Disease Data Set for this assignment. The link to the dataset is <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data>. The data was donated to the site on 1988 and was last modified on July 23th 1996.__  
+
+* [Get the Hungarian "Heart Disease Data Set" from online.](#1)
+* [Creating a subset and inserting column names.](#2)
+* [Transform the subset using the "data dictionary".](#3)
+* [Creating a subset with specific rows.](#4)
+* [Put the new subset in a table format.](#5)
+* [The number of male and female patient in the table 1.](#6)
+
+
+__<a name="1"/>I got the dataset from online and create a table on R. I also check how much data I have, by checking the number of columns and rows.__
+
+```{r}
+library(RCurl)
+x <- getURL("http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data")
+y <- read.table(text = x, header = FALSE)
+head(y, 10)
+ncol(y)
+nrow(y)
+```
+
+
+__<a name="2"/> Choosing specific data or creating a subset of data naming it the HHD table. I also name the columns according to the data dictionary. The data dictionary for the "Heart Disease Data Set" can found at <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/heart-disease.names>.__
+
+
+```{r}
+HHD <- data.frame(y[c(1:4, 7, 9)])
+names(HHD) <- c("Age", "Sex", "Chest_Pain_Type", "Resting_Blood_Pressure", "Resting_EKG", "Exercise_Induced_Angina")
+head(HHD, 3)
+```
+
+  
+__<a name="3"/> I transform the data in the table HHD, subset of the Hungarian "Heart Disease Data Set".__
+
+```{r}
+HHD$Sex <- ifelse(HHD$Sex=="0", "female", 
+           ifelse(HHD$Sex=="1", "male", 
+           ifelse(HHD$Sex=="-9", "missing", "N/A")
+))
+
+HHD$Chest_Pain_Type <- ifelse(HHD$Chest_Pain_Type=="1", "typical angina", 
+          ifelse(HHD$Chest_Pain_Type=="2", "atypical angina", 
+          ifelse(HHD$Chest_Pain_Type=="3", "non-anginal pain", 
+          ifelse(HHD$Chest_Pain_Type=="4", "asymptomatic",  
+          ifelse(HHD$Chest_Pain_Type=="-9", "missing", "N/A")
+))))
+
+HHD$Resting_EKG <- ifelse(HHD$Resting_EKG=="0", "normal", 
+          ifelse(HHD$Resting_EKG=="1", "ST-T wave abnormality", 
+          ifelse(HHD$Resting_EKG=="2", "probable or definite left ventricular hypertrophy", 
+          ifelse(HHD$Resting_EKG=="-9", "missing", "N/A")
+)))
+
+HHD$Exercise_Induced_Angina <- ifelse(HHD$Exercise_Induced_Angina=="0", "no", 
+           ifelse(HHD$Exercise_Induced_Angina=="1", "yes", 
+           ifelse(HHD$Exercise_Induced_Angina=="-9", "missing", "N/A")
+))
+
+head(HHD, 10)
+```
+
+__<a name="4"/>I wanted to see the information of patients who had an abnormal EKG at rest and had angina (chest pain) with exercise. So, I created another subset name SubHHD, which contains only the rows that I wanted to look at.__
+
+```{r, echo=TRUE, results="hold"} 
+SubHHD <- subset(HHD, Resting_EKG != "normal" & Resting_EKG !="missing" & Exercise_Induced_Angina == "yes" )
+```
+
+__<a name="5"/>I get rid of the unique row names, and put the SubHHD table in a R Markdown format table using `knitr` package__
+
+```{r, echo=TRUE, tidy=TRUE}
+rownames(SubHHD) <- NULL
+library(knitr)
+kable(SubHHD, align = "c", caption = "Table 1: List of patients who had an abnormal EKG at rest and had angina with exercise.")
+```
+
+__<a name="6"/>Let us see how many male patient and how many female patient there are, who had an abnormal EKG at rest and had angina (chest pain) with exercise in Hungary. Using the `plyr` package I see that there are only 4 female patient and 17 male patient who meets my criteria.__
+
+```{r}
+library(plyr)
+SubHHD2 <- count(SubHHD, 'Sex')
+kable(SubHHD2, align = "c", caption = "Table 2: Number of patients by sex in table 1.")
+```
+
