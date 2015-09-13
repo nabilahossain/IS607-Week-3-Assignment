@@ -10,7 +10,7 @@ output: html_document
     
 I use the "UC Irvine Machine Learning Repository," which is an online repository with many databases. One such dataset is Heart Disease dataset <http://archive.ics.uci.edu/ml/datasets/Heart+Disease> which has four data sets from four different places. 
 
-<a name="A"/>__I choose the reprocesses Hungarian Heart Disease Data Set for this assignment. The link to the dataset is <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data>. The data was donated to the site on 1988 and was last modified on July 23th 1996.__  
+<a name="A"/>__I choose the reprocessed data of Hungarian Heart Disease Data Set for this assignment. The link to the dataset is <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data>. The data was donated to the site on 1988 and was last modified on July 23th 1996.__  
 
 * [Get the Hungarian "Heart Disease Data Set" from online.](#1)
 * [Creating a subset and inserting column names.](#2)
