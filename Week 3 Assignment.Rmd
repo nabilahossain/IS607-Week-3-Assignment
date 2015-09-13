@@ -10,7 +10,7 @@ output: html_document
     
 I use the "UC Irvine Machine Learning Repository," which is an online repository with many databases. One such dataset is Heart Disease dataset <http://archive.ics.uci.edu/ml/datasets/Heart+Disease> which has four data sets from four different places. 
 
-__I choose the reprocesses Hungarian Heart Disease Data Set for this assignment. The link to the dataset is <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data>. The data was donated to the site on 1988 and was last modified on July 23th 1996.__  
+<a name="A"/>__I choose the reprocesses Hungarian Heart Disease Data Set for this assignment. The link to the dataset is <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data>. The data was donated to the site on 1988 and was last modified on July 23th 1996.__  
 
 * [Get the Hungarian "Heart Disease Data Set" from online.](#1)
 * [Creating a subset and inserting column names.](#2)
@@ -34,6 +34,7 @@ nrow(y)
 
 __<a name="2"/> Choosing specific data or creating a subset of data naming it the HHD table. I also name the columns according to the data dictionary. The data dictionary for the "Heart Disease Data Set" can found at <http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/heart-disease.names>.__
 
+[Up](#A)
 
 ```{r}
 HHD <- data.frame(y[c(1:4, 7, 9)])
@@ -43,6 +44,8 @@ head(HHD, 3)
 
   
 __<a name="3"/> I transform the data in the table HHD, subset of the Hungarian "Heart Disease Data Set".__
+
+[Up](#A)
 
 ```{r}
 HHD$Sex <- ifelse(HHD$Sex=="0", "female", 
@@ -73,11 +76,15 @@ head(HHD, 10)
 
 __<a name="4"/>I wanted to see the information of patients who had an abnormal EKG at rest and had angina (chest pain) with exercise. So, I created another subset name SubHHD, which contains only the rows that I wanted to look at.__
 
+[Up](#A)
+
 ```{r, echo=TRUE, results="hold"} 
 SubHHD <- subset(HHD, Resting_EKG != "normal" & Resting_EKG !="missing" & Exercise_Induced_Angina == "yes" )
 ```
 
 __<a name="5"/>I get rid of the unique row names, and put the SubHHD table in a R Markdown format table using `knitr` package__
+
+[Up](#A)
 
 ```{r, echo=TRUE, tidy=TRUE}
 rownames(SubHHD) <- NULL
@@ -86,6 +93,8 @@ kable(SubHHD, align = "c", caption = "Table 1: List of patients who had an abnor
 ```
 
 __<a name="6"/>Let us see how many male patient and how many female patient there are, who had an abnormal EKG at rest and had angina (chest pain) with exercise in Hungary. Using the `plyr` package I see that there are only 4 female patient and 17 male patient who meets my criteria.__
+
+[Up](#A)
 
 ```{r}
 library(plyr)
